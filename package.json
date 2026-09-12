@@ -9,28 +9,30 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-
+    "test": "bun test",
     "postinstall": "prisma skills sync || exit 0",
+    "prebuild": "prisma contract emit",
     "contract:emit": "prisma contract emit",
-
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "docker:logs": "docker compose logs -f",
-
-    "check": "bun run lint && bun run typecheck && bun run build"
+    "check": "bun run lint && bun run typecheck && bun test && bun run build"
   },
   "dependencies": {
     "@prisma/client": "^7.10.0",
     "@prisma/orm-postgres": "^8.0.0-rc.10",
+    "bcryptjs": "3.0.3",
     "dotenv": "^17.4.2",
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "redis": "^6.2.1"
+    "redis": "^6.2.1",
+    "zod": "4.6.2"
   },
   "devDependencies": {
     "@prisma/cli-engine": "0.2.3",
     "@tailwindcss/postcss": "^4",
+    "@types/bun": "^1.4.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

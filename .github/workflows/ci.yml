@@ -16,6 +16,10 @@ jobs:
     env:
       # Placeholder only: db.ts asserts DATABASE_URL at import, nothing connects during build.
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/coolpark
+      # Placeholder only: redis connects lazily, nothing connects during build.
+      REDIS_URL: redis://localhost:6379
+      # Placeholder only: used to build email links at request time.
+      APP_URL: http://localhost:3000
 
     steps:
       - name: Checkout
@@ -37,6 +41,9 @@ jobs:
 
       - name: Typecheck
         run: bun run typecheck
+
+      - name: Test
+        run: bun test
 
       - name: Build
         run: bun run build
