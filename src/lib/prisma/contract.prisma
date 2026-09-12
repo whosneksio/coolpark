@@ -1,0 +1,44 @@
+// use prisma-next
+
+model User {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  name     String?
+  password String
+
+  emailVerified Boolean @default(false)
+
+  sessions           Session[]
+  emailVerifications EmailVerification[]
+
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+}
+
+model Session {
+  id     String @id @default(uuid())
+  userId String
+
+  token     String            @unique
+  expiresAt TimestamptzString
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt TimestamptzString @default(now())
+
+  @@index([userId])
+}
+
+model EmailVerification {
+  id     String @id @default(uuid())
+  userId String
+
+  token     String            @unique
+  expiresAt TimestamptzString
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt TimestamptzString @default(now())
+
+  @@index([userId])
+}
