@@ -36,6 +36,9 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      - name: Typegen
+        run: bunx next typegen
+
       - name: Typecheck
         run: bun run typecheck
 
