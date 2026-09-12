@@ -17,7 +17,7 @@
     "docker:down": "docker compose down",
     "docker:logs": "docker compose logs -f",
 
-    "check": "bun run lint && bun run typecheck && bun run build"
+    "check": "bun run lint && bun run typecheck && bunx next typegen && bun run build "
   },
   "dependencies": {
     "@prisma/client": "^7.10.0",
