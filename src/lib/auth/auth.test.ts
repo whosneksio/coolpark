@@ -14,8 +14,6 @@ describe('schemas', () => {
     expect(registerSchema.safeParse({ email: 'nope', password: 'hunter22' }).success).toBe(false);
   });
 
-  // bcrypt truncates past 72 bytes, so without max(72) a 200-char password and
-  // its first 72 chars are the same credential.
   test('rejects a password over 72 bytes', () => {
     expect(registerSchema.safeParse({ email: 'a@b.co', password: 'x'.repeat(73) }).success).toBe(
       false,
@@ -55,9 +53,6 @@ describe('password', () => {
     expect(await verifyPassword('hunter23', hash)).toBe(false);
   });
 
-  // The whole point of DUMMY_HASH is that comparing against it costs the same as
-  // a real hash. A malformed constant returns false instantly and reopens the
-  // timing channel this exists to close.
   test('DUMMY_HASH is a real cost-12 hash', async () => {
     expect(DUMMY_HASH).toMatch(/^\$2[aby]\$12\$/);
     expect(await verifyPassword('anything', DUMMY_HASH)).toBe(false);

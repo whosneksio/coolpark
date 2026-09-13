@@ -7,7 +7,6 @@ import { BAD_JSON, jsonError, jsonOk, readJson } from '@/lib/http';
 import { db } from '@/lib/prisma/db';
 
 export async function POST(request: Request) {
-  // First, before any DB work.
   const limit = await checkRateLimit(`rl:login:${clientIp(request)}`, 5, 900);
   if (!limit.ok) {
     return Response.json(
@@ -30,18 +29,12 @@ export async function POST(request: Request) {
     .select('id', 'email', 'name', 'password', 'emailVerified')
     .first({ email });
 
-  // The ?? DUMMY_HASH is the entire timing defence, and the two checks must be
-  // combined AFTER the compare. Returning early on !user would make account
-  // existence measurable with a stopwatch, since bcrypt dominates the response.
   const valid = await verifyPassword(password, user?.password ?? DUMMY_HASH);
   if (!user || !valid) return jsonError(401, 'INVALID_CREDENTIALS');
 
-  // Deliberately distinguishable, unlike the credential errors: the caller
-  // already proved the password, so the client can offer a resend.
   if (!user.emailVerified) return jsonError(403, 'EMAIL_NOT_VERIFIED');
 
   await createSession(user.id);
 
-  // Field by field, not a spread: a column added later can't leak.
   return jsonOk({ user: { id: user.id, email: user.email, name: user.name } });
 }

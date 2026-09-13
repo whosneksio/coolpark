@@ -26,8 +26,6 @@ export async function POST(request: Request) {
 
   let token: string;
   try {
-    // Atomic: a user with no verification row can't log in and can't be
-    // recovered without the resend endpoint.
     token = await db.transaction(async (tx) => {
       const user = await tx.orm.public.User
         .select('id')
@@ -35,13 +33,7 @@ export async function POST(request: Request) {
       return issueVerification(user.id, tx);
     });
   } catch (error) {
-    // The unique index is the arbiter. Pre-checking with first({ email }) and
-    // branching lets two concurrent registrations both pass the check.
     if (isUniqueViolation(error)) {
-      // A 409 does disclose that an address is registered. There's no way to
-      // reject duplicates and hide membership at this endpoint, and the
-      // alternative (always 201 + notify the existing owner) needs real mail
-      // delivery. Deliberate: enumeration resistance lives on login and resend.
       return jsonError(409, 'EMAIL_TAKEN', 'That email is already registered.');
     }
     throw error;
@@ -49,14 +41,10 @@ export async function POST(request: Request) {
 
   await sendVerificationEmail(email, token);
 
-  // No session -- login is gated on verification.
   return jsonOk({ ok: true }, 201);
 }
 
 function isUniqueViolation(error: unknown) {
-  // isUniqueConstraintViolation lives in @prisma/orm-family-sql/errors, but that
-  // package is a transitive dep -- importing it is a phantom dependency. Its
-  // whole body is this sqlState check.
   return (
     typeof error === 'object' &&
     error !== null &&

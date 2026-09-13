@@ -17,10 +17,6 @@ export async function POST(request: Request) {
 
   const { email } = parsed.data;
 
-  // Keyed by email, not IP: the abuse being stopped is mailbox-bombing one
-  // address. Checked BEFORE the lookup -- otherwise the limiter becomes the
-  // enumeration oracle it exists to prevent, since a fast 202 means no user and
-  // a slow one means mail went out.
   const limit = await checkRateLimit(`rl:verify:${email}`, 3, 3600);
   if (!limit.ok) {
     return jsonError(429, 'RATE_LIMITED', 'Too many attempts. Try again later.');
@@ -33,7 +29,5 @@ export async function POST(request: Request) {
     await sendVerificationEmail(email, token);
   }
 
-  // 202 unconditionally: unknown address, already-verified address, and success
-  // are indistinguishable.
   return jsonOk({ ok: true }, 202);
 }
