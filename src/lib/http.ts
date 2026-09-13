@@ -17,7 +17,6 @@ export function jsonOk(data: unknown, status = 200) {
 
 export const BAD_JSON = Symbol('BAD_JSON');
 
-/** `await req.json()` that returns BAD_JSON instead of throwing on a malformed body. */
 export async function readJson(req: Request): Promise<unknown | typeof BAD_JSON> {
   try {
     return await req.json();
