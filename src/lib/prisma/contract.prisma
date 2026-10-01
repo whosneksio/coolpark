@@ -7,9 +7,17 @@ model User {
   password String
 
   emailVerified Boolean @default(false)
+  role          String  @default("user")
+  balanceCents  Int     @default(0)
 
   sessions           Session[]
   emailVerifications EmailVerification[]
+  vehicles           Vehicle[]
+  paymentInfos       PaymentInfo[]
+  reservations       Reservation[]
+  payments           Payment[]
+  transactions       Transaction[]
+  subscriptions      Subscription[]
 
   createdAt TimestamptzString @default(now())
   updatedAt temporal.updatedAtString()
@@ -41,4 +49,124 @@ model EmailVerification {
   createdAt TimestamptzString @default(now())
 
   @@index([userId])
+}
+
+model ParkingMap {
+  id         String @id @default(uuid())
+  name       String
+  location   String
+  totalSpots Int
+  freeSpots  Int
+
+  spots ParkingSpot[]
+}
+
+model ParkingSpot {
+  id           String @id @default(uuid())
+  parkingMapId String
+  label        String
+  isAvailable  Boolean @default(true)
+
+  parkingMap   ParkingMap   @relation(fields: [parkingMapId], references: [id], onDelete: Cascade)
+  reservations Reservation[]
+
+  @@unique([parkingMapId, label])
+  @@index([parkingMapId])
+}
+
+model Vehicle {
+  id String @id @default(uuid())
+
+  userId       String
+  name         String
+  licensePlate String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reservations Reservation[]
+
+  @@index([userId])
+}
+
+model PaymentInfo {
+  id              String @id @default(uuid())
+  userId          String
+  preferredMethod String
+  details         Json
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payments Payment[]
+
+  @@index([userId])
+}
+
+model Reservation {
+  id            String @id @default(uuid())
+  userId        String
+  parkingSpotId String
+  vehicleId     String
+  startsAt      TimestamptzString
+  endsAt        TimestamptzString
+  status        String @default("pending")
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parkingSpot ParkingSpot @relation(fields: [parkingSpotId], references: [id])
+  vehicle     Vehicle     @relation(fields: [vehicleId], references: [id])
+  payment     Payment?
+
+  createdAt TimestamptzString @default(now())
+
+  @@index([userId])
+  @@index([parkingSpotId, startsAt, endsAt])
+  @@index([vehicleId])
+}
+
+model Payment {
+  id            String @id @default(uuid())
+  userId        String
+  reservationId  String @unique
+  paymentInfoId String?
+  amountCents   Int
+  status        String @default("pending")
+  receipt       Json?
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reservation Reservation  @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  paymentInfo PaymentInfo? @relation(fields: [paymentInfoId], references: [id], onDelete: SetNull)
+  transaction Transaction?
+
+  createdAt TimestamptzString @default(now())
+
+  @@index([userId])
+  @@index([paymentInfoId])
+}
+
+model Transaction {
+  id            String @id @default(uuid())
+  userId        String
+  paymentId     String? @unique
+  amountCents   Int
+  type          String
+  description   String?
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment Payment? @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+
+  createdAt TimestamptzString @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model Subscription {
+  id          String @id @default(uuid())
+  userId      String
+  startsAt    TimestamptzString
+  endsAt      TimestamptzString
+  status      String @default("active")
+  amountCents Int
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt TimestamptzString @default(now())
+
+  @@index([userId, startsAt, endsAt])
 }
