@@ -7,6 +7,7 @@ model User {
   password String
 
   emailVerified Boolean @default(false)
+  isAdmin       Boolean @default(false)
   role          String  @default("user")
   balanceCents  Int     @default(0)
 

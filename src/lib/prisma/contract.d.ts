@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'8e58577f0d2a3056de069d852b6ac099fdefc09af0bc22420ca23f55c9ad1cec'>;
+  StorageHashBase<'b5ec53c4aea5c6af7f1bbc49e12e219746b2df713fd6c2142a6412883bb85aca'>;
 export type ExecutionHash =
-  ExecutionHashBase<'fea8c9265073abc46234e0a689aaec51c5346dac81d7461a7cf13ef284e0d881'>;
+  ExecutionHashBase<'678c511a00175f1c9e59b087c8ae445119322ee12b070b5f636d8730d948c835'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -249,11 +249,68 @@ export type FieldOutputTypes = {
       readonly expiresAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
+    readonly ParkingMap: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly location: CodecTypes['pg/text@1']['output'];
+      readonly totalSpots: CodecTypes['pg/int4@1']['output'];
+      readonly freeSpots: CodecTypes['pg/int4@1']['output'];
+    };
+    readonly ParkingSpot: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly parkingMapId: CodecTypes['pg/text@1']['output'];
+      readonly label: CodecTypes['pg/text@1']['output'];
+      readonly isAvailable: CodecTypes['pg/bool@1']['output'];
+    };
+    readonly Payment: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+      readonly reservationId: CodecTypes['pg/text@1']['output'];
+      readonly paymentInfoId: CodecTypes['pg/text@1']['output'] | null;
+      readonly amountCents: CodecTypes['pg/int4@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly receipt: CodecTypes['pg/json@1']['output'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
+    readonly PaymentInfo: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+      readonly preferredMethod: CodecTypes['pg/text@1']['output'];
+      readonly details: CodecTypes['pg/json@1']['output'];
+    };
+    readonly Reservation: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+      readonly parkingSpotId: CodecTypes['pg/text@1']['output'];
+      readonly vehicleId: CodecTypes['pg/text@1']['output'];
+      readonly startsAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly endsAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
     readonly Session: {
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
       readonly token: CodecTypes['pg/text@1']['output'];
       readonly expiresAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
+    readonly Subscription: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+      readonly startsAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly endsAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly amountCents: CodecTypes['pg/int4@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
+    readonly Transaction: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+      readonly paymentId: CodecTypes['pg/text@1']['output'] | null;
+      readonly amountCents: CodecTypes['pg/int4@1']['output'];
+      readonly type: CodecTypes['pg/text@1']['output'];
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly User: {
@@ -262,8 +319,17 @@ export type FieldOutputTypes = {
       readonly name: CodecTypes['pg/text@1']['output'] | null;
       readonly password: CodecTypes['pg/text@1']['output'];
       readonly emailVerified: CodecTypes['pg/bool@1']['output'];
+      readonly isAdmin: CodecTypes['pg/bool@1']['output'];
+      readonly role: CodecTypes['pg/text@1']['output'];
+      readonly balanceCents: CodecTypes['pg/int4@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
+    readonly Vehicle: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly licensePlate: CodecTypes['pg/text@1']['output'];
     };
   };
 };
@@ -276,11 +342,68 @@ export type FieldInputTypes = {
       readonly expiresAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
+    readonly ParkingMap: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly location: CodecTypes['pg/text@1']['input'];
+      readonly totalSpots: CodecTypes['pg/int4@1']['input'];
+      readonly freeSpots: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly ParkingSpot: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly parkingMapId: CodecTypes['pg/text@1']['input'];
+      readonly label: CodecTypes['pg/text@1']['input'];
+      readonly isAvailable: CodecTypes['pg/bool@1']['input'];
+    };
+    readonly Payment: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+      readonly reservationId: CodecTypes['pg/text@1']['input'];
+      readonly paymentInfoId: CodecTypes['pg/text@1']['input'] | null;
+      readonly amountCents: CodecTypes['pg/int4@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly receipt: CodecTypes['pg/json@1']['input'] | null;
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
+    readonly PaymentInfo: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+      readonly preferredMethod: CodecTypes['pg/text@1']['input'];
+      readonly details: CodecTypes['pg/json@1']['input'];
+    };
+    readonly Reservation: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+      readonly parkingSpotId: CodecTypes['pg/text@1']['input'];
+      readonly vehicleId: CodecTypes['pg/text@1']['input'];
+      readonly startsAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly endsAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
     readonly Session: {
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
       readonly token: CodecTypes['pg/text@1']['input'];
       readonly expiresAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
+    readonly Subscription: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+      readonly startsAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly endsAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly amountCents: CodecTypes['pg/int4@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
+    readonly Transaction: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+      readonly paymentId: CodecTypes['pg/text@1']['input'] | null;
+      readonly amountCents: CodecTypes['pg/int4@1']['input'];
+      readonly type: CodecTypes['pg/text@1']['input'];
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly User: {
@@ -289,8 +412,17 @@ export type FieldInputTypes = {
       readonly name: CodecTypes['pg/text@1']['input'] | null;
       readonly password: CodecTypes['pg/text@1']['input'];
       readonly emailVerified: CodecTypes['pg/bool@1']['input'];
+      readonly isAdmin: CodecTypes['pg/bool@1']['input'];
+      readonly role: CodecTypes['pg/text@1']['input'];
+      readonly balanceCents: CodecTypes['pg/int4@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
+    readonly Vehicle: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly licensePlate: CodecTypes['pg/text@1']['input'];
     };
   };
 };
@@ -303,6 +435,45 @@ export type StorageColumnTypes = {
       readonly token: CodecTypes['pg/text@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
+    readonly parkingMap: {
+      readonly freeSpots: CodecTypes['pg/int4@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly location: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly totalSpots: CodecTypes['pg/int4@1']['output'];
+    };
+    readonly parkingSpot: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly isAvailable: CodecTypes['pg/bool@1']['output'];
+      readonly label: CodecTypes['pg/text@1']['output'];
+      readonly parkingMapId: CodecTypes['pg/text@1']['output'];
+    };
+    readonly payment: {
+      readonly amountCents: CodecTypes['pg/int4@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly paymentInfoId: CodecTypes['pg/text@1']['output'] | null;
+      readonly receipt: CodecTypes['pg/json@1']['output'] | null;
+      readonly reservationId: CodecTypes['pg/text@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+    };
+    readonly paymentInfo: {
+      readonly details: CodecTypes['pg/json@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly preferredMethod: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+    };
+    readonly reservation: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly endsAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly parkingSpotId: CodecTypes['pg/text@1']['output'];
+      readonly startsAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+      readonly vehicleId: CodecTypes['pg/text@1']['output'];
+    };
     readonly session: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly expiresAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -310,14 +481,41 @@ export type StorageColumnTypes = {
       readonly token: CodecTypes['pg/text@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
+    readonly subscription: {
+      readonly amountCents: CodecTypes['pg/int4@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly endsAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly startsAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly status: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+    };
+    readonly transaction: {
+      readonly amountCents: CodecTypes['pg/int4@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly description: CodecTypes['pg/text@1']['output'] | null;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly paymentId: CodecTypes['pg/text@1']['output'] | null;
+      readonly type: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+    };
     readonly user: {
+      readonly balanceCents: CodecTypes['pg/int4@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly emailVerified: CodecTypes['pg/bool@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
+      readonly isAdmin: CodecTypes['pg/bool@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'] | null;
       readonly password: CodecTypes['pg/text@1']['output'];
+      readonly role: CodecTypes['pg/text@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
+    readonly vehicle: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly licensePlate: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
     };
   };
 };
@@ -330,6 +528,45 @@ export type StorageColumnInputTypes = {
       readonly token: CodecTypes['pg/text@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
+    readonly parkingMap: {
+      readonly freeSpots: CodecTypes['pg/int4@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly location: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly totalSpots: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly parkingSpot: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly isAvailable: CodecTypes['pg/bool@1']['input'];
+      readonly label: CodecTypes['pg/text@1']['input'];
+      readonly parkingMapId: CodecTypes['pg/text@1']['input'];
+    };
+    readonly payment: {
+      readonly amountCents: CodecTypes['pg/int4@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly paymentInfoId: CodecTypes['pg/text@1']['input'] | null;
+      readonly receipt: CodecTypes['pg/json@1']['input'] | null;
+      readonly reservationId: CodecTypes['pg/text@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+    };
+    readonly paymentInfo: {
+      readonly details: CodecTypes['pg/json@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly preferredMethod: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+    };
+    readonly reservation: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly endsAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly parkingSpotId: CodecTypes['pg/text@1']['input'];
+      readonly startsAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+      readonly vehicleId: CodecTypes['pg/text@1']['input'];
+    };
     readonly session: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly expiresAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -337,14 +574,41 @@ export type StorageColumnInputTypes = {
       readonly token: CodecTypes['pg/text@1']['input'];
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
+    readonly subscription: {
+      readonly amountCents: CodecTypes['pg/int4@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly endsAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly startsAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly status: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+    };
+    readonly transaction: {
+      readonly amountCents: CodecTypes['pg/int4@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly description: CodecTypes['pg/text@1']['input'] | null;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly paymentId: CodecTypes['pg/text@1']['input'] | null;
+      readonly type: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+    };
     readonly user: {
+      readonly balanceCents: CodecTypes['pg/int4@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly emailVerified: CodecTypes['pg/bool@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
+      readonly isAdmin: CodecTypes['pg/bool@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'] | null;
       readonly password: CodecTypes['pg/text@1']['input'];
+      readonly role: CodecTypes['pg/text@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
+    readonly vehicle: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly licensePlate: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
     };
   };
 };
@@ -420,6 +684,357 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly parkingMap: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly location: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly totalSpots: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly freeSpots: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
+            readonly parkingSpot: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly parkingMapId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly label: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly isAvailable: {
+                  readonly nativeType: 'bool';
+                  readonly codecId: 'pg/bool@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/bool@1', true>;
+                  };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['parkingMapId', 'label'] }];
+              indexes: readonly [
+                {
+                  readonly name: 'parkingSpot_parkingMapId_idx_a3f8d7df';
+                  readonly prefix: 'parkingSpot_parkingMapId_idx';
+                  readonly columns: readonly ['parkingMapId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'parkingSpot';
+                    readonly columns: readonly ['parkingMapId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'parkingMap';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly payment: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly userId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly reservationId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly paymentInfoId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly amountCents: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly status: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'pending'>;
+                  };
+                };
+                readonly receipt: {
+                  readonly nativeType: 'json';
+                  readonly codecId: 'pg/json@1';
+                  readonly nullable: true;
+                };
+                readonly createdAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['reservationId'] }];
+              indexes: readonly [
+                {
+                  readonly name: 'payment_userId_idx_a489d58a';
+                  readonly prefix: 'payment_userId_idx';
+                  readonly columns: readonly ['userId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'payment_paymentInfoId_idx_7f5d758d';
+                  readonly prefix: 'payment_paymentInfoId_idx';
+                  readonly columns: readonly ['paymentInfoId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'payment';
+                    readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'user';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'payment';
+                    readonly columns: readonly ['reservationId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'reservation';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'payment';
+                    readonly columns: readonly ['paymentInfoId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'paymentInfo';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly paymentInfo: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly userId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly preferredMethod: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly details: {
+                  readonly nativeType: 'json';
+                  readonly codecId: 'pg/json@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'paymentInfo_userId_idx_a489d58a';
+                  readonly prefix: 'paymentInfo_userId_idx';
+                  readonly columns: readonly ['userId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'paymentInfo';
+                    readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'user';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly reservation: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly userId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly parkingSpotId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly vehicleId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly startsAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                };
+                readonly endsAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                };
+                readonly status: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'pending'>;
+                  };
+                };
+                readonly createdAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'reservation_userId_idx_a489d58a';
+                  readonly prefix: 'reservation_userId_idx';
+                  readonly columns: readonly ['userId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'reservation_parkingSpotId_startsAt_endsAt_idx_56134a8b';
+                  readonly prefix: 'reservation_parkingSpotId_startsAt_endsAt_idx';
+                  readonly columns: readonly ['parkingSpotId', 'startsAt', 'endsAt'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'reservation_vehicleId_idx_e2df58fc';
+                  readonly prefix: 'reservation_vehicleId_idx';
+                  readonly columns: readonly ['vehicleId'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'reservation_parkingSpotId_idx_d20eccbc';
+                  readonly prefix: 'reservation_parkingSpotId_idx';
+                  readonly columns: readonly ['parkingSpotId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'reservation';
+                    readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'user';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'reservation';
+                    readonly columns: readonly ['parkingSpotId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'parkingSpot';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'reservation';
+                    readonly columns: readonly ['vehicleId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'vehicle';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
             readonly session: {
               columns: {
                 readonly id: {
@@ -474,6 +1089,162 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly subscription: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly userId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly startsAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                };
+                readonly endsAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                };
+                readonly status: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'active'>;
+                  };
+                };
+                readonly amountCents: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly createdAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'subscription_userId_startsAt_endsAt_idx_f291d444';
+                  readonly prefix: 'subscription_userId_startsAt_endsAt_idx';
+                  readonly columns: readonly ['userId', 'startsAt', 'endsAt'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'subscription_userId_idx_a489d58a';
+                  readonly prefix: 'subscription_userId_idx';
+                  readonly columns: readonly ['userId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'subscription';
+                    readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'user';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly transaction: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly userId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly paymentId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly amountCents: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly type: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly description: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
+                readonly createdAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['paymentId'] }];
+              indexes: readonly [
+                {
+                  readonly name: 'transaction_userId_createdAt_idx_f726f04a';
+                  readonly prefix: 'transaction_userId_createdAt_idx';
+                  readonly columns: readonly ['userId', 'createdAt'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'transaction_userId_idx_a489d58a';
+                  readonly prefix: 'transaction_userId_idx';
+                  readonly columns: readonly ['userId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'transaction';
+                    readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'user';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'transaction';
+                    readonly columns: readonly ['paymentId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'payment';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
             readonly user: {
               columns: {
                 readonly id: {
@@ -505,6 +1276,33 @@ type ContractBase = Omit<
                     readonly value: DefaultLiteralValue<'pg/bool@1', false>;
                   };
                 };
+                readonly isAdmin: {
+                  readonly nativeType: 'bool';
+                  readonly codecId: 'pg/bool@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/bool@1', false>;
+                  };
+                };
+                readonly role: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/text@1', 'user'>;
+                  };
+                };
+                readonly balanceCents: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 0>;
+                  };
+                };
                 readonly createdAt: {
                   readonly nativeType: 'timestamptz';
                   readonly codecId: 'pg/timestamptz-string@1';
@@ -522,6 +1320,54 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
+            readonly vehicle: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly userId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly name: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly licensePlate: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'vehicle_userId_idx_a489d58a';
+                  readonly prefix: 'vehicle_userId_idx';
+                  readonly columns: readonly ['userId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'vehicle';
+                    readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'user';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
           };
         };
       };
@@ -538,6 +1384,32 @@ type ContractBase = Omit<
     readonly emailVerification: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'EmailVerification';
+    };
+    readonly parkingMap: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ParkingMap';
+    };
+    readonly parkingSpot: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ParkingSpot';
+    };
+    readonly vehicle: { readonly namespace: 'public' & NamespaceId; readonly model: 'Vehicle' };
+    readonly paymentInfo: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'PaymentInfo';
+    };
+    readonly reservation: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'Reservation';
+    };
+    readonly payment: { readonly namespace: 'public' & NamespaceId; readonly model: 'Payment' };
+    readonly transaction: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'Transaction';
+    };
+    readonly subscription: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'Subscription';
     };
   };
   readonly domain: {
@@ -595,6 +1467,357 @@ type ContractBase = Omit<
               };
             };
           };
+          readonly ParkingMap: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly location: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly totalSpots: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly freeSpots: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+            };
+            readonly relations: {
+              readonly spots: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ParkingSpot';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['parkingMapId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'parkingMap';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly name: { readonly column: 'name' };
+                readonly location: { readonly column: 'location' };
+                readonly totalSpots: { readonly column: 'totalSpots' };
+                readonly freeSpots: { readonly column: 'freeSpots' };
+              };
+            };
+          };
+          readonly ParkingSpot: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly parkingMapId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly label: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly isAvailable: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
+            };
+            readonly relations: {
+              readonly parkingMap: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ParkingMap';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['parkingMapId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly reservations: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Reservation';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['parkingSpotId'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'parkingSpot';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly parkingMapId: { readonly column: 'parkingMapId' };
+                readonly label: { readonly column: 'label' };
+                readonly isAvailable: { readonly column: 'isAvailable' };
+              };
+            };
+          };
+          readonly Payment: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly reservationId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly paymentInfoId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly amountCents: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly receipt: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/json@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly paymentInfo: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'PaymentInfo';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['paymentInfoId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly reservation: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Reservation';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['reservationId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly transaction: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Transaction';
+                };
+                readonly cardinality: '1:1';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['paymentId'];
+                };
+              };
+              readonly user: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'payment';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly userId: { readonly column: 'userId' };
+                readonly reservationId: { readonly column: 'reservationId' };
+                readonly paymentInfoId: { readonly column: 'paymentInfoId' };
+                readonly amountCents: { readonly column: 'amountCents' };
+                readonly status: { readonly column: 'status' };
+                readonly receipt: { readonly column: 'receipt' };
+                readonly createdAt: { readonly column: 'createdAt' };
+              };
+            };
+          };
+          readonly PaymentInfo: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly preferredMethod: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly details: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/json@1' };
+              };
+            };
+            readonly relations: {
+              readonly payments: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Payment';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['paymentInfoId'];
+                };
+              };
+              readonly user: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'paymentInfo';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly userId: { readonly column: 'userId' };
+                readonly preferredMethod: { readonly column: 'preferredMethod' };
+                readonly details: { readonly column: 'details' };
+              };
+            };
+          };
+          readonly Reservation: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly parkingSpotId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly vehicleId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly startsAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly endsAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly parkingSpot: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'ParkingSpot';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['parkingSpotId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly payment: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Payment';
+                };
+                readonly cardinality: '1:1';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['reservationId'];
+                };
+              };
+              readonly user: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly vehicle: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Vehicle';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['vehicleId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'reservation';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly userId: { readonly column: 'userId' };
+                readonly parkingSpotId: { readonly column: 'parkingSpotId' };
+                readonly vehicleId: { readonly column: 'vehicleId' };
+                readonly startsAt: { readonly column: 'startsAt' };
+                readonly endsAt: { readonly column: 'endsAt' };
+                readonly status: { readonly column: 'status' };
+                readonly createdAt: { readonly column: 'createdAt' };
+              };
+            };
+          };
           readonly Session: {
             readonly fields: {
               readonly id: {
@@ -646,6 +1869,139 @@ type ContractBase = Omit<
               };
             };
           };
+          readonly Subscription: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly startsAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly endsAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly amountCents: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly user: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'subscription';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly userId: { readonly column: 'userId' };
+                readonly startsAt: { readonly column: 'startsAt' };
+                readonly endsAt: { readonly column: 'endsAt' };
+                readonly status: { readonly column: 'status' };
+                readonly amountCents: { readonly column: 'amountCents' };
+                readonly createdAt: { readonly column: 'createdAt' };
+              };
+            };
+          };
+          readonly Transaction: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly paymentId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly amountCents: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly type: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly description: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+            };
+            readonly relations: {
+              readonly payment: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Payment';
+                };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['paymentId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly user: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'transaction';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly userId: { readonly column: 'userId' };
+                readonly paymentId: { readonly column: 'paymentId' };
+                readonly amountCents: { readonly column: 'amountCents' };
+                readonly type: { readonly column: 'type' };
+                readonly description: { readonly column: 'description' };
+                readonly createdAt: { readonly column: 'createdAt' };
+              };
+            };
+          };
           readonly User: {
             readonly fields: {
               readonly id: {
@@ -667,6 +2023,18 @@ type ContractBase = Omit<
               readonly emailVerified: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
+              readonly isAdmin: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
+              readonly role: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly balanceCents: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
               readonly createdAt: {
                 readonly nullable: false;
@@ -695,10 +2063,76 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['userId'];
                 };
               };
+              readonly paymentInfos: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'PaymentInfo';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly payments: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Payment';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly reservations: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Reservation';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
               readonly sessions: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
                   readonly model: 'Session';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly subscriptions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Subscription';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly transactions: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Transaction';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
+              readonly vehicles: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Vehicle';
                 };
                 readonly cardinality: '1:N';
                 readonly on: {
@@ -716,8 +2150,62 @@ type ContractBase = Omit<
                 readonly name: { readonly column: 'name' };
                 readonly password: { readonly column: 'password' };
                 readonly emailVerified: { readonly column: 'emailVerified' };
+                readonly isAdmin: { readonly column: 'isAdmin' };
+                readonly role: { readonly column: 'role' };
+                readonly balanceCents: { readonly column: 'balanceCents' };
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
+              };
+            };
+          };
+          readonly Vehicle: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly licensePlate: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly reservations: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Reservation';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['vehicleId'];
+                };
+              };
+              readonly user: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'vehicle';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly userId: { readonly column: 'userId' };
+                readonly name: { readonly column: 'name' };
+                readonly licensePlate: { readonly column: 'licensePlate' };
               };
             };
           };
@@ -759,7 +2247,63 @@ type ContractBase = Omit<
         {
           readonly ref: {
             readonly namespace: 'public';
+            readonly table: 'parkingMap';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'parkingSpot';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'payment';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'paymentInfo';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'reservation';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
             readonly table: 'session';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'subscription';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'transaction';
             readonly column: 'id';
           };
           readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
@@ -780,6 +2324,14 @@ type ContractBase = Omit<
           };
           readonly onCreate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
           readonly onUpdate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
+        },
+        {
+          readonly ref: {
+            readonly namespace: 'public';
+            readonly table: 'vehicle';
+            readonly column: 'id';
+          };
+          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
         },
       ];
     };

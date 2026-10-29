@@ -3,7 +3,7 @@ import { hashPassword } from '@/lib/auth/password';
 import { checkRateLimit, clientIp } from '@/lib/auth/rate-limit';
 import { registerSchema } from '@/lib/auth/schemas';
 import { issueVerification } from '@/lib/auth/verification';
-import { BAD_JSON, jsonError, jsonOk, readJson } from '@/lib/http';
+import { BAD_JSON, isUniqueViolation, jsonError, jsonOk, readJson } from '@/lib/http';
 import { sendVerificationEmail } from '@/lib/mail';
 import { db } from '@/lib/prisma/db';
 
@@ -42,13 +42,4 @@ export async function POST(request: Request) {
   await sendVerificationEmail(email, token);
 
   return jsonOk({ ok: true }, 201);
-}
-
-function isUniqueViolation(error: unknown) {
-  return (
-    typeof error === 'object' &&
-    error !== null &&
-    'sqlState' in error &&
-    (error as { sqlState?: unknown }).sqlState === '23505'
-  );
 }

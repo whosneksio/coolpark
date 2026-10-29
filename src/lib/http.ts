@@ -24,3 +24,21 @@ export async function readJson(req: Request): Promise<unknown | typeof BAD_JSON>
     return BAD_JSON;
   }
 }
+
+export function isForeignKeyViolation(error: unknown) {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'sqlState' in error &&
+    (error as { sqlState?: unknown }).sqlState === '23503'
+  );
+}
+
+export function isUniqueViolation(error: unknown) {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'sqlState' in error &&
+    (error as { sqlState?: unknown }).sqlState === '23505'
+  );
+}
