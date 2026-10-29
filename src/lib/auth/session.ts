@@ -39,7 +39,7 @@ export async function getCurrentUser() {
   }
 
   return db.orm.public.User.where({ id: session.userId })
-    .select('id', 'email', 'name', 'emailVerified', 'createdAt')
+    .select('id', 'email', 'name', 'emailVerified', 'isAdmin', 'createdAt')
     .first();
 }
 
