@@ -16,7 +16,8 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "docker:logs": "docker compose logs -f",
-    "check": "bun run lint && bun run typecheck && bun test && bun run build"
+    "check": "bun run lint && bun run typecheck && bun test && bun run build",
+    "cflared": "bunx cloudflared tunnel --url http://localhost:3000"
   },
   "dependencies": {
     "@prisma/client": "^7.10.0",
