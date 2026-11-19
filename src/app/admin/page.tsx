@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface Spot {
   id: string;
@@ -32,16 +32,13 @@ export default function AdminPage() {
   const [spotLabels, setSpotLabels] = useState('');
   const [isAddingSpots, setIsAddingSpots] = useState(false);
 
-  async function loadMaps() {
+  const loadMaps = useCallback(async () => {
     try {
-      setIsLoading(true);
       const res = await fetch('/api/admin/parking-maps');
       const data = await res.json();
       if (res.ok && data.maps) {
         setMaps(data.maps);
-        if (!selectedMapId && data.maps.length > 0) {
-          setSelectedMapId(data.maps[0].id);
-        }
+        setSelectedMapId((prev) => prev ?? (data.maps.length > 0 ? data.maps[0].id : null));
       } else {
         setError(data.message || 'Nie udało się pobrać parkingów.');
       }
@@ -50,10 +47,31 @@ export default function AdminPage() {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
-    loadMaps();
+    let ignore = false;
+    fetch('/api/admin/parking-maps')
+      .then((res) => res.json())
+      .then((data) => {
+        if (ignore) return;
+        if (data.maps) {
+          setMaps(data.maps);
+          setSelectedMapId((prev) => prev ?? (data.maps.length > 0 ? data.maps[0].id : null));
+        } else {
+          setError(data.message || 'Nie udało się pobrać parkingów.');
+        }
+      })
+      .catch(() => {
+        if (!ignore) setError('Błąd połączenia z serwerem.');
+      })
+      .finally(() => {
+        if (!ignore) setIsLoading(false);
+      });
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   async function handleCreateMap(e: React.FormEvent) {

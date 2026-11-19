@@ -7,23 +7,30 @@ import { useSearchParams } from 'next/navigation';
 function VerifyContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>(() => {
+    return token ? 'loading' : 'error';
+  });
 
   useEffect(() => {
-    if (!token) {
-      setStatus('error');
-      return;
-    }
+    if (!token) return;
+
+    let ignore = false;
 
     fetch(`/api/auth/verify?token=${encodeURIComponent(token)}`)
       .then((res) => {
-        if (res.ok) {
-          setStatus('success');
-        } else {
-          setStatus('error');
+        if (!ignore) {
+          setStatus(res.ok ? 'success' : 'error');
         }
       })
-      .catch(() => setStatus('error'));
+      .catch(() => {
+        if (!ignore) {
+          setStatus('error');
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
   }, [token]);
 
   return (

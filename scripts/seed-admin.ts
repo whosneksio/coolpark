@@ -1,5 +1,5 @@
-import { hashPassword } from '../src/lib/auth/password.ts';
-import { db } from '../src/lib/prisma/db.ts';
+import { hashPassword } from '@/lib/auth/password';
+import { db } from '@/lib/prisma/db';
 
 async function seedAdmin() {
   const email = 'admin@coolpark.pl';
